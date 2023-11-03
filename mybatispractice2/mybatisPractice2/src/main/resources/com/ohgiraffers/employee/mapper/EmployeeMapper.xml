@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ohgiraffers.employee.mapper.EmployeeMapper">
+
+    <cache eviction="LRU" flushInterval="1000" size="512" readOnly="true"/>
+
+
+    <resultMap id="selectAllEmployeeResultMap" type="com.ohgiraffers.employee.common.EmployeeAndJobAndDepartmentDTO">
+        <id property="empid" column="EMP_ID"/>
+        <result property="empname" column="EMP_NAME"/>
+        <result property="phone" column="PHONE"/>
+        <result property="empno" column="EMP_NO"/>
+        <result property="deptcode" column="DEPT_CODE"/>
+        <result property="jobcode" column="JOB_CODE"/>
+        <association property="department" javaType="com.ohgiraffers.employee.common.DepartmentDTO">
+            <id property="deptid" column="DEPT_ID"/>
+            <result property="depttitle" column="DEPT_TITLE"/>
+            <result property="locationid" column="LOCATION_ID"/>
+        </association>
+        <association property="job" column="com.ohgiraffers.employee.common.JobDTO">
+            <id property="jobcode" column="JOB_CODE"/>
+            <result property="jobname" column="JOB_NAME"/>
+
+        </association>
+
+
+    </resultMap>
+    <select id="selectAllEmployee" resultMap="selectAllEmployeeResultMap">
+        SELECT
+               A.EMP_NAME,
+               A.PHONE,
+               B.DEPT_TITLE,
+               C.JOB_NAME
+        FROM   EMPLOYEE A
+            JOIN DEPARTMENT B ON(A.DEPT_CODE = B.DEPT_ID),
+            JOIN JOB C ON(A.JOB_CODE = C.JOB_CODE)
+
+
+
+
+    </select>
+    
+    
+</mapper>
+
+
+
+
+
